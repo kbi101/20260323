@@ -48,5 +48,8 @@ research_report.txt
 .history/
 .cursorrules
 
+# Local Deployment (Private)
+devops/docker-compose-local.yml
+
 # Docker
 .dockerignore
