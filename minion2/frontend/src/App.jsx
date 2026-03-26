@@ -91,10 +91,11 @@ const App = () => {
                         const chatLines = newLogs.filter(L => L.includes('assistant') || L.includes('user') || L.includes('PHASE') || L.includes('FINAL REPORT'));
                         if (chatLines.length > 0) setConversation(chatLines);
 
-                        if (newLogs[newLogs.length-1].includes('COMPLETE')) {
+                        if (newLogs.some(L => L.includes('MISSION_ACCOMPLISHED'))) {
                            clearInterval(logInterval.current);
                            setStatus("COMPLETE");
-                           loadHistory(); loadMemories(); loadReports();
+                           // 🏛️ Synaptic Refresh: Ensure all sidebar lists manifest the latest mission result
+                           loadHistory(); loadMemories(); loadReports(); 
                         }
                     }
                 }, 1500);

@@ -140,7 +140,7 @@ async def run_mission(sid: str, task: str, skill_type: str, model: str, phases: 
             print(f"[{sid}] {msg}")
 
         res = await hub.orchestrator.run(skill, task, sid, phases, on_status=log_cb)
-        hub.active_logs[sid].append(f"✅ Mission Complete: {res if res else 'Report Manifested'}")
+        hub.active_logs[sid].append(f"🏁 Reasoning Lifecycle Finished: {sid}")
         hub.status[sid] = "done"
         
         # ✅ FIX P0: record_end so sessions are no longer stuck as "running"
@@ -178,7 +178,7 @@ async def run_mission(sid: str, task: str, skill_type: str, model: str, phases: 
         hub.active_logs[sid].append(f"📡 Persisting final result to hub...")
         await hub.db.record_report(sid, task, final_report)
         hub.active_logs[sid].append(f"FINAL REPORT: \n{final_report}")
-        hub.active_logs[sid].append(f"✅ Mission Complete: Intelligence Manifested.")
+        hub.active_logs[sid].append(f"🏆 MISSION_ACCOMPLISHED: Intelligence Manifested.")
         
     except Exception as e:
         hub.active_logs[sid].append(f"❌ Critical Fault: {str(e)}")
