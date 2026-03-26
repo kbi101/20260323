@@ -7,7 +7,7 @@ from typing import List, Optional, Dict
 import time as _time
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String, Integer, Text, DateTime, ForeignKey, select, insert, update, delete, desc
+from sqlalchemy import String, Integer, Text, DateTime, ForeignKey, select, insert, update, delete, desc, func
 
 class Base(DeclarativeBase):
     pass
@@ -22,7 +22,7 @@ class ModelPerformance(Base):
     duration_ms: Mapped[int] = mapped_column(Integer, default=0)
     feedback: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[str] = mapped_column(String, default="running")
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class ModelTurn(Base):
     __tablename__ = "model_turns"
@@ -33,14 +33,14 @@ class ModelTurn(Base):
     response: Mapped[str] = mapped_column(Text)
     latency_ms: Mapped[int] = mapped_column(Integer)
     feedback: Mapped[int] = mapped_column(Integer, default=0)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class ResearchReport(Base):
     __tablename__ = "research_reports"
     session_id: Mapped[str] = mapped_column(String, primary_key=True)
     task: Mapped[str] = mapped_column(Text)
     report_content: Mapped[str] = mapped_column(Text)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class Memory(Base):
     __tablename__ = "memories"
@@ -48,7 +48,7 @@ class Memory(Base):
     session_id: Mapped[str] = mapped_column(String)
     key: Mapped[str] = mapped_column(String)
     value: Mapped[str] = mapped_column(Text)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class SearchCache(Base):
     __tablename__ = "search_cache"
@@ -57,7 +57,7 @@ class SearchCache(Base):
     query_hash: Mapped[str] = mapped_column(String, index=True)
     response: Mapped[str] = mapped_column(Text)
     hit_count: Mapped[int] = mapped_column(Integer, default=0)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class LLMCache(Base):
     __tablename__ = "llm_cache"
@@ -66,7 +66,7 @@ class LLMCache(Base):
     prompt_hash: Mapped[str] = mapped_column(String, index=True)
     response: Mapped[str] = mapped_column(Text)
     hit_count: Mapped[int] = mapped_column(Integer, default=0)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=func.now())
 
 class Storage:
     def __init__(self, db_url: str):
@@ -119,7 +119,7 @@ class Storage:
                     existing.task_hash = h
                     existing.model_name = model
                     existing.skill_name = skill
-                    existing.timestamp = datetime.utcnow()
+                    existing.timestamp = func.now()
                     existing.status = "running"
                 else:
                     session.add(ModelPerformance(id=id, task_hash=h, task_content=task, model_name=model, skill_name=skill))

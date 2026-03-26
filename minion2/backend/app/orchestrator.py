@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 import json
 import os
 import re
@@ -256,6 +257,7 @@ class Orchestrator:
 
     def get_system_prompt(self, skill: Skill, task: str):
         return f"""You are Minion 2.0, an AI research agent. 
+CURRENT DATE: {datetime.now().strftime('%Y-%m-%d')}
 ADOPT THIS PERSONA: {skill.persona}
 
 You are performing the skill: {skill.name}.

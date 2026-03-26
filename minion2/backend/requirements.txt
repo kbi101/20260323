@@ -4,7 +4,7 @@ httpx
 playwright
 sqlalchemy[asyncio]
 aiosqlite
-psycopg
+psycopg[binary]
 duckduckgo_search
 python-multipart
 pydantic
