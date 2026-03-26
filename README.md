@@ -8,12 +8,12 @@ Minion 2.0 is an autonomous agentic platform that transforms complex research ta
 
 ## 🎨 Product Showcase: Intelligence in Motion
 
-| 🚀 Mission Control (Live Telemetry) | 📄 Intelligence Manifest (Report) |
-|:---:|:---:|
-| ![Mission Control](doc/screenshots/mission_control_live.png) | ![Intelligence Report](doc/screenshots/mission_result_report.png) |
+| 🚀 Mission Control | 📄 Intelligence Manifest | 📂 Reports Library |
+|:---:|:---:|:---:|
+| ![Mission Control](doc/screenshots/mission_control_live.png) | ![Intelligence Report](doc/screenshots/mission_result_report.png) | ![Reports Library](doc/screenshots/reports_library_view.png) |
 
 > [!NOTE]
-> *Dashboard visualization of a research mission in progress, featuring real-time reasoning logs and automated intelligence archiving.*
+> *Dashboard visualization of a research mission in progress, Featuring real-time reasoning logs, automated intelligence archiving, and an integrated research library.*
 
 ---
 
