@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+httpx
+playwright
+sqlalchemy[asyncio]
+aiosqlite
+psycopg
+duckduckgo_search
+python-multipart
+pydantic
+pydantic-settings
+jinja2
+python-dotenv
+markdown
+beautifulsoup4
+pytest
+pytest-asyncio

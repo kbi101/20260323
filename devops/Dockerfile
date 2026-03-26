@@ -33,7 +33,7 @@ COPY minion2/backend/ ./
 
 # Environment Defaults for Unified Service
 ENV PORT=3015
-ENV DATABASE_URL=postgresql+psycopg://postgres:your_password_here@host.docker.internal/dao_db?options=-csearch_path%3Dminion
+ENV DATABASE_URL=sqlite+aiosqlite:///minion_memory.db
 ENV LLM_URL=http://host.docker.internal:11434
 ENV FRONTEND_DIR=/dist
 

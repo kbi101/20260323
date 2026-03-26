@@ -49,8 +49,8 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup():
     # 🏛️ Minion 2.0 Persistence Protocol (High-Fidelity)
-    # Linked to Local Discovery Hub (127.0.0.1/dao_db) where your mission history resides
-    db_url = os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:your_password_here@127.0.0.1/dao_db?options=-csearch_path%3Dminion")
+    # Linked to Local Discovery Hub where your mission history resides
+    db_url = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///minion_memory.db")
     print(f"📡 Syncing with Persistence Node: {db_url}...")
     hub.db = Storage(db_url)
     await hub.db.init()

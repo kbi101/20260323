@@ -70,7 +70,10 @@ class LLMCache(Base):
 
 class Storage:
     def __init__(self, db_url: str):
-        self.engine = create_async_engine(db_url, pool_size=10, max_overflow=20)
+        if db_url.startswith("sqlite"):
+            self.engine = create_async_engine(db_url)
+        else:
+            self.engine = create_async_engine(db_url, pool_size=10, max_overflow=20)
         self.session_factory = async_sessionmaker(self.engine, expire_on_commit=False)
 
     async def init(self):
@@ -79,22 +82,27 @@ class Storage:
             async with self.engine.begin() as conn:
                 # Create tables that don't yet exist (won't touch existing ones)
                 await conn.run_sync(Base.metadata.create_all)
-                # Create index for the llm cache if needed manually, though SQLAlchemy handles `index=True` on create_all
                 # Safe schema migration: add columns introduced after initial deploy
+                # 🏛️ Neural Sync: Handle SQLite vs Postgres schema prefixes
+                is_sqlite = "sqlite" in str(self.engine.url)
+                prefix = "" if is_sqlite else "minion."
+                
                 migrations = [
-                    "ALTER TABLE minion.model_performance ADD COLUMN IF NOT EXISTS skill_name TEXT",
-                    "ALTER TABLE minion.model_performance ADD COLUMN IF NOT EXISTS feedback INTEGER DEFAULT 0",
-                    "ALTER TABLE minion.model_performance ADD COLUMN IF NOT EXISTS duration_ms INTEGER DEFAULT 0",
-                    "ALTER TABLE minion.model_turns     ADD COLUMN IF NOT EXISTS feedback INTEGER DEFAULT 0",
-                    "ALTER TABLE minion.search_cache    ADD COLUMN IF NOT EXISTS hit_count INTEGER DEFAULT 0",
-                    "ALTER TABLE minion.llm_cache       ADD COLUMN IF NOT EXISTS hit_count INTEGER DEFAULT 0",
+                    f"ALTER TABLE {prefix}model_performance ADD COLUMN skill_name TEXT",
+                    f"ALTER TABLE {prefix}model_performance ADD COLUMN feedback INTEGER DEFAULT 0",
+                    f"ALTER TABLE {prefix}model_performance ADD COLUMN duration_ms INTEGER DEFAULT 0",
+                    f"ALTER TABLE {prefix}model_turns     ADD COLUMN feedback INTEGER DEFAULT 0",
+                    f"ALTER TABLE {prefix}search_cache    ADD COLUMN hit_count INTEGER DEFAULT 0",
+                    f"ALTER TABLE {prefix}llm_cache       ADD COLUMN hit_count INTEGER DEFAULT 0",
                 ]
+                # Note: ADD COLUMN IF NOT EXISTS isn't standard in older Postgres/SQLite.
+                # We catch exceptions for 'already exists' instead for maximum cross-dialect fidelity.
                 for sql in migrations:
                     try:
                         await conn.execute(text(sql))
                     except Exception:
                         pass  # column already exists — ignore
-            print("🏛️ Persistence Core: Synched with Remote Host Successfully.")
+            print("🏛️ Persistence Core: Synched with Intelligence Hub Successfully.")
         except Exception as e:
             print(f"⚠️ Persistence Warning: Could not reach Remote Host at this moment ({str(e)}). Proceeding in Standby Mode.")
 
