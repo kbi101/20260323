@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  minion:
+    build:
+      context: ..
+      dockerfile: devops/Dockerfile
+    container_name: minion-v2-unified
+    ports:
+      - "3015:3015"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://postgres:your_password_here@host.docker.internal/dao_db?options=-csearch_path%3Dminion
+      - LLM_URL=http://host.docker.internal:11434
+      - PYTHONUNBUFFERED=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ../minion2/backend:/app
+    restart: unless-stopped
+
+volumes:
+  minion-data:
+  minion-db:

@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  color-scheme: dark;
+  --theme-accent: #00f2ff;
+  --theme-accent-rgb: 0, 242, 255;
+  --theme-bg: #050505;
+  --theme-sidebar: #09090b;
+  --theme-glow: rgba(0, 242, 255, 0.4);
+}
+
+body.theme-forest {
+  --theme-accent: #00ff9f;
+  --theme-accent-rgb: 0, 255, 159;
+  --theme-bg: #020f0a;
+  --theme-sidebar: #041a12;
+  --theme-glow: rgba(0, 255, 159, 0.4);
+}
+
+body.theme-crimson {
+  --theme-accent: #ff3040;
+  --theme-accent-rgb: 255, 48, 64;
+  --theme-bg: #0f0204;
+  --theme-sidebar: #1a0408;
+  --theme-glow: rgba(255, 48, 64, 0.4);
+}
+
+body.theme-violet {
+  --theme-accent: #bf5af2;
+  --theme-accent-rgb: 191, 90, 242;
+  --theme-bg: #0a020f;
+  --theme-sidebar: #14041a;
+  --theme-glow: rgba(191, 90, 242, 0.4);
+}
+
+body.theme-amber {
+  --theme-accent: #ff9f0a;
+  --theme-accent-rgb: 255, 159, 10;
+  --theme-bg: #0f0a02;
+  --theme-sidebar: #1a1204;
+  --theme-glow: rgba(255, 159, 10, 0.4);
+}
+
+body {
+  margin: 0;
+  background-color: var(--theme-bg);
+  overflow: hidden;
+  color: #e0e0e0;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Transitions */
+.transition-theme {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
